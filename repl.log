@@ -1,0 +1,7 @@
+
+> typescript-pokedex@1.0.0 dev
+> npx tsc && node dist/main.js
+
+Pokedex >Your command was: charmander
+Pokedex >Your command was: pikachu
+Pokedex >
