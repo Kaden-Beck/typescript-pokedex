@@ -1,24 +1,10 @@
 import * as readline from 'readline';
-import type { CLICommand } from './command.js';
-import { commandExit, commandHelp } from "./commandFunctions.js"
-
-export function getCommands(): Record<string, CLICommand> {
-  return {
-    exit: {
-      name: "exit",
-      description: "Exits the pokedex",
-      callback: commandExit,
-    },
-    help: {
-      name: "help",
-      description: "Gets help for the pokedex CLI",
-      callback: commandHelp,
-    },
-  };
-}
+import { initState, type CLICommand } from './state.js';
 
 
-export function cleanInput(input: string): string[] {
+
+
+export function cleanInput(input: string) {
     let cleanOutput: string[] = input.trim().split(/\s+/);
 
     for (let i = 0; i < cleanOutput.length; i++) {
@@ -29,27 +15,20 @@ export function cleanInput(input: string): string[] {
 }
 
 export function startREPL() : void {
-    
-    // Initialize line reader
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout, 
-        prompt: "Pokedex > ",
-    });
-    const commands: Record<string, CLICommand> = getCommands(); 
-    rl.prompt();
+    const replState = initState();
+    const {readline, commands } = replState;
+    readline.prompt();
 
     // Listen for input on line and process any commands
-    rl.on("line", (input) => {
-
+    readline.on("line", (input) => {
         // if input is not empty clean input
         if (input.trim() !== "") {
-            const cleanOutput: string[] = cleanInput(input);
-            const commandKey: string = cleanOutput[0];
+            const cleanOutput = cleanInput(input);
+            const commandKey = cleanOutput[0];
 
             if (commandKey in commands) {
                 try {
-                    commands[commandKey].callback(commands); 
+                    commands[commandKey].callback(replState); 
                 } catch (err) {
                     if (err instanceof Error) {
                         console.error(err.message);
@@ -59,10 +38,10 @@ export function startREPL() : void {
                 }    
             } else {
                 console.log("Unknown command");
-                rl.prompt();
+                readline.prompt();
             }            
         } 
-        rl.prompt();
+        readline.prompt();
     })
 
 }

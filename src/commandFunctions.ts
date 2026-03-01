@@ -1,17 +1,23 @@
-import type { CLICommand } from './command.js';
+import type { State } from './state.js';
 
-export function commandExit(commands: Record<string, CLICommand>): void {
+export function commandExit(replState: State): void {
+    const { readline } = replState;
+
     console.log("Closing the Pokedex... Goodbye!"); 
+    readline.close();
     process.exit(0);
 }
 
-export function commandHelp(commands: Record<string, CLICommand>): void {
+export function commandHelp(replState: State): void {
     console.log("Welcome to the Pokedex!\nUsage:\nThis CLI tool is used to access Pokemon data from the PokeDex API.\nCommands:");
+    const { commands } = replState;
+
     for (const commandKey in commands) {
         const name: string = commands[commandKey].name;
         const description: string = commands[commandKey].description;
         console.log(`${name}: ${description}`)
-
     }
 }
+
+
 
