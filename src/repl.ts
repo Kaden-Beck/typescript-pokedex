@@ -1,5 +1,22 @@
 import * as readline from 'readline';
-import { callbackify } from 'util';
+import type { CLICommand } from './command.js';
+import { commandExit, commandHelp } from "./commandFunctions.js"
+
+export function getCommands(): Record<string, CLICommand> {
+  return {
+    exit: {
+      name: "exit",
+      description: "Exits the pokedex",
+      callback: commandExit,
+    },
+    help: {
+      name: "help",
+      description: "Gets help for the pokedex CLI",
+      callback: commandHelp,
+    },
+  };
+}
+
 
 export function cleanInput(input: string): string[] {
     let cleanOutput: string[] = input.trim().split(/\s+/);
@@ -12,29 +29,42 @@ export function cleanInput(input: string): string[] {
 }
 
 export function startREPL() : void {
-    // Set CLI prompt
-    let textPrompt = "Pokedex >";
     
     // Initialize line reader
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout, 
-        prompt: textPrompt,
+        prompt: "Pokedex > ",
     });
-
-    // Display interface prompt
+    const commands: Record<string, CLICommand> = getCommands(); 
     rl.prompt();
 
-    // Listen for input
+    // Listen for input on line and process any commands
     rl.on("line", (input) => {
-        
+
         // if input is not empty clean input
         if (input.trim() !== "") {
-            let cleanOutput: string[] = cleanInput(input);
-            console.log(`Your command was: ${cleanOutput[0]}`)
+            const cleanOutput: string[] = cleanInput(input);
+            const commandKey: string = cleanOutput[0];
+
+            if (commandKey in commands) {
+                try {
+                    commands[commandKey].callback(commands); 
+                } catch (err) {
+                    if (err instanceof Error) {
+                        console.error(err.message);
+                    } else {
+                        console.error(`Unknown Error: ${err}`);
+                    }
+                }    
+            } else {
+                console.log("Unknown command");
+                rl.prompt();
+            }            
         } 
-            rl.prompt();
+        rl.prompt();
     })
+
 }
 
 
