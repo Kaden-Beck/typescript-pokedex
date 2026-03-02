@@ -1,9 +1,9 @@
 import { createInterface, type Interface } from "readline";
 import { commandExit, commandHelp } from "./commandFunctions.js"
 import { mapCommand, mapBackCommand }  from "./mapCommand.js";
-import { PokeAPI } from "./pokeapi.js";
 import { exploreCommand } from "./exploreCommand.js";
 import { catchCommand } from "./catchCommands.js";
+import { PokeAPI, Pokemon } from "./pokeapi.js";
 
 export type CLICommand = {
     name: string;
@@ -17,7 +17,9 @@ export type State = {
     pokeAPI: PokeAPI, 
     nextLocationsURL?: string | null, 
     prevLocationsURL?: string | null, 
+    userPokedex: Record<string, Pokemon>
 };
+
 
 export function getCommands(): Record<string, CLICommand> {
   return {
@@ -54,6 +56,8 @@ export function getCommands(): Record<string, CLICommand> {
   };
 };
 
+
+
 export function initState(): State {
     const readLineInterface = createInterface({
         input: process.stdin,
@@ -68,6 +72,7 @@ export function initState(): State {
     return {
         readline: readLineInterface,
         commands: commandRecords, 
-        pokeAPI: pokeAPIInstance
+        pokeAPI: pokeAPIInstance,
+        userPokedex: {}
     }
 }
