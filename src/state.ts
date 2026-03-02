@@ -3,6 +3,7 @@ import { commandExit, commandHelp } from "./commandFunctions.js"
 import { mapCommand, mapBackCommand }  from "./mapCommand.js";
 import { PokeAPI } from "./pokeapi.js";
 import { exploreCommand } from "./exploreCommand.js";
+import { catchCommand } from "./catchCommands.js";
 
 export type CLICommand = {
     name: string;
@@ -44,6 +45,11 @@ export function getCommands(): Record<string, CLICommand> {
         name: "explore", 
         description: "Prints 10 Pokemon in a given location area", 
         callback: exploreCommand
+    }, 
+    catch: {
+        name: "catch", 
+        description: "Catch Pokemon", 
+        callback: catchCommand
     }
   };
 };

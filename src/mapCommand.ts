@@ -1,4 +1,4 @@
-import { pokedexEndpoint } from "./pokeapi.js";
+import { PokedexEndpoint } from "./pokeapi.js";
 import { State } from "./state.js";
 
 export async function mapCommand(state: State): Promise<void> {
@@ -8,7 +8,7 @@ export async function mapCommand(state: State): Promise<void> {
         ? await pokeAPI.fetchLocations(state.nextLocationsURL)
         : await pokeAPI.fetchLocations();
 
-    const data: pokedexEndpoint[] = result.results;
+    const data: PokedexEndpoint[] = result.results;
     
     state.nextLocationsURL = result.next;
     state.prevLocationsURL = result.previous;
@@ -25,7 +25,7 @@ export async function mapBackCommand(state: State): Promise<void> {
         ? await pokeAPI.fetchLocations(state.prevLocationsURL)
         : await pokeAPI.fetchLocations();
 
-    const data: pokedexEndpoint[] = result.results;
+    const data: PokedexEndpoint[] = result.results;
     
     state.nextLocationsURL = result.next;
     state.prevLocationsURL = result.previous;
