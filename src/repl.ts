@@ -23,10 +23,11 @@ export async function startREPL() : Promise<void> {
         if (input.trim() !== "") {
             const cleanOutput = cleanInput(input);
             const commandKey = cleanOutput[0];
+            const [, ...args] = cleanOutput;
 
         if (commandKey in commands) {
             try {
-                await commands[commandKey].callback(replState); 
+                await commands[commandKey].callback(replState, ...args); 
             } catch (err) {
                 if (err instanceof Error) {
                     console.error(err.message);

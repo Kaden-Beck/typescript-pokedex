@@ -2,4 +2,16 @@
 > typescript-pokedex@1.0.0 dev
 > npx tsc && node dist/main.js
 
-Pokedex > 
+Pokedex > Exploring pastoria-city-area...
+Found Pokemon
+ - tentacool
+ - tentacruel
+ - magikarp
+ - gyarados
+ - remoraid
+ - octillery
+ - wingull
+ - pelipper
+ - shellos
+ - gastrodon
+Pokedex > Closing the Pokedex... Goodbye!

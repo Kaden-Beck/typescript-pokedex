@@ -2,11 +2,12 @@ import { createInterface, type Interface } from "readline";
 import { commandExit, commandHelp } from "./commandFunctions.js"
 import { mapCommand, mapBackCommand }  from "./mapCommand.js";
 import { PokeAPI } from "./pokeapi.js";
+import { exploreCommand } from "./exploreCommand.js";
 
 export type CLICommand = {
     name: string;
     description: string;
-    callback: (state: State) => Promise<void>;    
+    callback: (state: State, ...args: string[]) => Promise<void>;    
 };
 
 export type State = {
@@ -31,13 +32,18 @@ export function getCommands(): Record<string, CLICommand> {
     },
     map: {
         name: "map", 
-        description: "Prints next 20 locations from PokeAPI", 
+        description: "Prints next 20 locations areas from PokeAPI", 
         callback: mapCommand
     },
     mapb: {
         name: "mapb", 
-        description: "Prints previous 20 locations from PokeAPI", 
+        description: "Prints previous 20 locations areas from PokeAPI", 
         callback: mapBackCommand
+    }, 
+    explore: {
+        name: "explore", 
+        description: "Prints 10 Pokemon in a given location area", 
+        callback: exploreCommand
     }
   };
 };
