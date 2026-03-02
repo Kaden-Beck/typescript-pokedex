@@ -10,35 +10,36 @@ export function cleanInput(input: string) {
     return cleanOutput;
 }
 
-export function startREPL() : void {
+export async function startREPL() : Promise<void> {
     const replState = initState();
-    const {readline, commands } = replState;
+    const { readline, commands } = replState;
+    
+    readline.setPrompt("Pokedex > ");
     readline.prompt();
 
-    // Listen for input on line and process any commands
-    readline.on("line", (input) => {
-        // if input is not empty clean input
+    for await (const line of readline) {  
+        const input = line.trim();
+
         if (input.trim() !== "") {
             const cleanOutput = cleanInput(input);
             const commandKey = cleanOutput[0];
 
-            if (commandKey in commands) {
-                try {
-                    commands[commandKey].callback(replState); 
-                } catch (err) {
-                    if (err instanceof Error) {
-                        console.error(err.message);
-                    } else {
-                        console.error(`Unknown Error: ${err}`);
-                    }
-                }    
-            } else {
-                console.log("Unknown command");
-                readline.prompt();
-            }            
+        if (commandKey in commands) {
+            try {
+                await commands[commandKey].callback(replState); 
+            } catch (err) {
+                if (err instanceof Error) {
+                    console.error(err.message);
+                } else {
+                    console.error(`Unknown Error: ${err}`);
+                }
+            }    
+        } else {
+            console.log("Unknown command");
+        }            
         } 
         readline.prompt();
-    })
+    }
 
 }
 

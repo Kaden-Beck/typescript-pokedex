@@ -1,6 +1,6 @@
 import type { State } from './state.js';
 
-export function commandExit(replState: State): void {
+export async function commandExit(replState: State): Promise<void> {
     const { readline } = replState;
 
     console.log("Closing the Pokedex... Goodbye!"); 
@@ -8,7 +8,7 @@ export function commandExit(replState: State): void {
     process.exit(0);
 }
 
-export function commandHelp(replState: State): void {
+export async function commandHelp(replState: State): Promise<void>  {
     console.log("Welcome to the Pokedex!\nUsage:\nThis CLI tool is used to access Pokemon data from the PokeDex API.\nCommands:");
     const { commands } = replState;
 

@@ -1,8 +1,16 @@
 // repl.js actually refers to repl.ts
 import { startREPL } from "./repl.js";
 
-function main() {
-  startREPL();
+async function main() {
+  try {
+    await startREPL();
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(err);
+    } else {
+      console.log(err);
+    }
+  }
 }
 
-main();
+await main();

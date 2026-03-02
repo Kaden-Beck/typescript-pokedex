@@ -1,20 +1,21 @@
 import { createInterface, type Interface } from "readline";
 import { commandExit, commandHelp } from "./commandFunctions.js"
-import mapCommand from "./mapCommand.js";
+import { mapCommand, mapBackCommand }  from "./mapCommand.js";
 import { PokeAPI } from "./pokeapi.js";
 
 export type CLICommand = {
     name: string;
     description: string;
-    callback: (state: State) => void;    
-}
+    callback: (state: State) => Promise<void>;    
+};
+
 export type State = {
     readline: Interface, 
     commands: Record<string, CLICommand>, 
     pokeAPI: PokeAPI, 
-    nextLocationsURL?: string, 
-    prevLocationsURL?: string, 
-}
+    nextLocationsURL?: string | null, 
+    prevLocationsURL?: string | null, 
+};
 
 export function getCommands(): Record<string, CLICommand> {
   return {
@@ -30,11 +31,16 @@ export function getCommands(): Record<string, CLICommand> {
     },
     map: {
         name: "map", 
-        description: "Prints 20 locations from PokeAPI", 
+        description: "Prints next 20 locations from PokeAPI", 
         callback: mapCommand
+    },
+    mapb: {
+        name: "mapb", 
+        description: "Prints previous 20 locations from PokeAPI", 
+        callback: mapBackCommand
     }
   };
-}
+};
 
 export function initState(): State {
     const readLineInterface = createInterface({

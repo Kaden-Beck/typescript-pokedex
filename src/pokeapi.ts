@@ -1,5 +1,5 @@
 export interface pokedexEndpoint {
-    kind: string
+    name: string
     url: string
 }
 
@@ -33,7 +33,7 @@ export class PokeAPI {
   async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
     const fullURL = pageURL 
         ? pageURL
-        :`${PokeAPI.baseURL}/location`;
+        :`${PokeAPI.baseURL}/location-area`;
 
     const result = await fetch(fullURL, {
         method: "GET", 
