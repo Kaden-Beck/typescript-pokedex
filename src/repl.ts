@@ -1,8 +1,4 @@
-import * as readline from 'readline';
-import { initState, type CLICommand } from './state.js';
-
-
-
+import { initState } from './state.js';
 
 export function cleanInput(input: string) {
     let cleanOutput: string[] = input.trim().split(/\s+/);
