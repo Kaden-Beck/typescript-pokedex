@@ -13,7 +13,7 @@ export async function catchCommand(state: State, ...args: string[]): Promise<voi
     const pokemonData = await pokeAPI.fetchPokemon(pokemonName);
     
     if (!pokemonData) {
-        throw new Error("Unable to catch a pokemon that doesn't exist...")
+        throw new Error("Unable to get that pokemon's info...")
     }
 
     const baseExperience: number = pokemonData.base_experience ?? 0;

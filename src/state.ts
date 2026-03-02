@@ -5,6 +5,7 @@ import { exploreCommand } from "./exploreCommand.js";
 import { catchCommand } from "./catchCommand.js";
 import { PokeAPI, Pokemon } from "./pokeapi.js";
 import { inspectCommand } from "./inspectCommand.js";
+import { pokedexCommand } from "./pokedexCommand.js";
 
 export type CLICommand = {
     name: string;
@@ -58,6 +59,11 @@ export function getCommands(): Record<string, CLICommand> {
         name: "inspect <pokemon>",
         description: "Inspect pokemon in your pokedex",
         callback: inspectCommand
+    }, 
+    pokedex: {
+        name: "pokdex", 
+        description: "View a list of Pokemon you have caught",
+        callback: pokedexCommand
     }
   };
 };
