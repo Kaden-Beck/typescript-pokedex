@@ -1,9 +1,10 @@
 import { createInterface, type Interface } from "readline";
-import { commandExit, commandHelp } from "./commandFunctions.js"
-import { mapCommand, mapBackCommand }  from "./mapCommand.js";
+import { commandExit, commandHelp } from "./basicCommands.js"
+import { mapCommand, mapBackCommand }  from "./mapCommands.js";
 import { exploreCommand } from "./exploreCommand.js";
-import { catchCommand } from "./catchCommands.js";
+import { catchCommand } from "./catchCommand.js";
 import { PokeAPI, Pokemon } from "./pokeapi.js";
+import { inspectCommand } from "./inspectCommand.js";
 
 export type CLICommand = {
     name: string;
@@ -44,14 +45,19 @@ export function getCommands(): Record<string, CLICommand> {
         callback: mapBackCommand
     }, 
     explore: {
-        name: "explore", 
+        name: "explore <location>", 
         description: "Prints 10 Pokemon in a given location area", 
         callback: exploreCommand
     }, 
     catch: {
-        name: "catch", 
+        name: "catch <pokemon>", 
         description: "Catch Pokemon", 
         callback: catchCommand
+    }, 
+    inspect: {
+        name: "inspect <pokemon>",
+        description: "Inspect pokemon in your pokedex",
+        callback: inspectCommand
     }
   };
 };

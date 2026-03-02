@@ -32,14 +32,13 @@ export interface PokemonEncounter {
 *****************/
 
 export interface Pokemon {
-    id: number
     name: string
     height: number
     weight: number
     base_experience: number
     location_area_encounters: string
     stats: Stat[]
-    types: Type[]
+    types: PokemonType[]
 }
 
 export interface Stat {
@@ -48,10 +47,11 @@ export interface Stat {
   stat: PokedexEndpoint
 }
 
-export interface Type {
+export interface PokemonType {
   slot: number
   type: PokedexEndpoint
 }
+
 
 export class PokeAPI {
     private static readonly baseURL = "https://pokeapi.co/api/v2";
