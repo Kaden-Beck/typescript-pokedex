@@ -1,3 +1,5 @@
+import { Cache } from "./pokecache.js";
+
 export interface pokedexEndpoint {
     name: string
     url: string
@@ -27,20 +29,28 @@ export type Location = {
 
 export class PokeAPI {
   private static readonly baseURL = "https://pokeapi.co/api/v2";
+  mapCache = new Cache(5000);
 
   constructor() {}
 
   async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
     const fullURL = pageURL 
-        ? pageURL
-        :`${PokeAPI.baseURL}/location-area`;
+      ? pageURL
+      :`${PokeAPI.baseURL}/location-area`;
+    const cachedMap: ShallowLocations | undefined = this.mapCache.get<ShallowLocations>(fullURL);  
 
-    const result = await fetch(fullURL, {
-        method: "GET", 
-        mode: "cors", 
-    });
-    const shallowLocations = await result.json();
-    return shallowLocations;
+    if (!cachedMap) {
+      const mapResult = await fetch(fullURL, {
+            method: "GET", 
+            mode: "cors", 
+        });
+      const shallowLocations: ShallowLocations = await mapResult.json();
+      this.mapCache.add<ShallowLocations>(fullURL, shallowLocations);
+        return shallowLocations;
+    } else {
+      return cachedMap;
+    }
+
   }
 
   async fetchLocation(locationName: string): Promise<Location> {
